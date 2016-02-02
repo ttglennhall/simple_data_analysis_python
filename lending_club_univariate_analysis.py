@@ -6,22 +6,22 @@ loansData = pd.read_csv('https://spark-public.s3.amazonaws.com/dataanalysis/loan
 #clean data
 loansData.dropna(inplace=True) #drop NA values
 
-f, (loansData, loansData) = plt.subplots(1, 2, sharey=True)
-#loansData.boxplot(column='Amount.Requested')
-
-#plt.subplot(1,2,1)
-loansData.boxplot(column='Amount.Requested')
-plt.title('Amount Requested')
-
-#plt.subplot(1,2,2)
-loansData.boxplot(column='Amount.Funded.By.Investors')
-plt.title('Amount Funded By Investors')
-
+#boxplot
+loansData.boxplot(column=['Amount.Requested','Amount.Funded.By.Investors'])
+plt.title('Amount Requested vs Amount Funded')
 plt.show()
 
-loansData.hist(column='Amount.Requested')
+#histogram
+lab = ['Amount Requested', 'Amount Funded']
+plt.hist([loansData['Amount.Requested'],loansData['Amount.Funded.By.Investors']], stacked=True, label=lab)
+plt.legend(loc='upper right')
+plt.title('Amount Requested vs Amount Funded')
 plt.show()
 
-plt.figure()
+ax1 = subplot(211)
 graph = stats.probplot(loansData['Amount.Requested'], dist="norm", plot=plt)
+
+ax2 = subplot(212)
+plt.figure()
+graph = stats.probplot(loansData['Amount.Funded.By.Investors'], dist="norm", plot=plt)
 plt.show()
